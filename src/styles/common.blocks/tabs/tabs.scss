@@ -1,0 +1,8 @@
+.tabs {
+  border-bottom: 1px solid gray;
+  display: block;
+  padding-top: 20px;
+  padding-left: 20px;
+}
+
+@import './__tab/tabs__tab.scss';

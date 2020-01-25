@@ -1,0 +1,6 @@
+.converter-input__currency {
+  border: 1px solid $border-color;
+  box-shadow: 0 0 0 5px rgba($border-color, 0.3);
+  display: inline-grid;
+  grid-template-columns: max-content 1fr;
+}

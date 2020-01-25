@@ -1,0 +1,8 @@
+.labeled-input {
+  display: block;
+  padding-top: 0.5em;
+  position: relative;
+}
+
+@import './__input/labeled-input__input.scss';
+@import './__label/labeled-input__label.scss';

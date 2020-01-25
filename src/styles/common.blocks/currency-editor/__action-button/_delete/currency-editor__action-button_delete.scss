@@ -1,0 +1,8 @@
+.currency-editor__action-button_delete {
+  background: #c00;
+  color: #fff;
+
+  &:hover {
+    background: darken(#c00, 5%);
+  }
+}

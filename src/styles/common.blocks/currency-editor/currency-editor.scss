@@ -1,0 +1,12 @@
+.currency-editor {
+  display: grid;
+  grid-gap: 15px;
+}
+
+@import './__action-button/currency-editor__action-button.scss';
+@import './__action-icon/currency-editor__action-icon.scss';
+@import './__action-label/currency-editor__action-label.scss';
+@import './__actions/currency-editor__actions.scss';
+@import './__delimiter/currency-editor__delimiter.scss';
+@import './__item/currency-editor__item.scss';
+@import './__message/currency-editor__message.scss';

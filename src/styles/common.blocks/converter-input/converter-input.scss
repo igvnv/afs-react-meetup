@@ -1,0 +1,9 @@
+$border-color: #cdcdcd;
+
+.converter-input {
+  padding: 0 0 20px;
+}
+
+@import './__currency-label/converter-input__currency-label.scss';
+@import './__currency/converter-input__currency.scss';
+@import './__input/converter-input__input.scss';

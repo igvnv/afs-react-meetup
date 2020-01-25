@@ -1,0 +1,11 @@
+.currency-editor__message {
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
+  font-size: 0.85em;
+  grid-column-end: 5;
+  grid-column-start: 1;
+  padding: 10px;
+  text-align: center;
+}
+
+@import './_error/currency-editor__message_error.scss';

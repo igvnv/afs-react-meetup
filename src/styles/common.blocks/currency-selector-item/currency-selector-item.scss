@@ -1,0 +1,18 @@
+.currency-selector-item {
+  display: grid;
+  grid-template-columns: 1fr max-content;
+  grid-gap: 20px;
+  grid-template-areas: 'label code';
+  padding: 10px;
+  cursor: pointer;
+  border-radius: 3px;
+
+  &:hover {
+    background: rgba(#548eaa, 0.5);
+  }
+}
+
+@import './_active/currency-selector-item_active.scss';
+
+@import './__code/currency-selector-item__code.scss';
+@import './__label/currency-selector-item__label.scss';
