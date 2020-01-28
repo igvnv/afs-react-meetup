@@ -1,4 +1,4 @@
-export default [
+const currencies = [
   {
     id: 1,
     code: 'USD',
@@ -55,3 +55,6 @@ export default [
     rate: 3.8386,
   },
 ];
+
+export default currencies;
+export const baseCurrency = currencies[0];
