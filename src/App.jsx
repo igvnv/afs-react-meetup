@@ -19,6 +19,7 @@ class App extends React.Component {
 
     this.updateCurrency = this.updateCurrency.bind(this);
     this.deleteCurrency = this.deleteCurrency.bind(this);
+    this.addCurrency = this.addCurrency.bind(this);
   }
 
   updateCurrency(updatedCurrency) {
@@ -38,6 +39,14 @@ class App extends React.Component {
     this.setState({
       currencies: currencies.filter((currency) => currency.id !== currencyId),
     });
+  }
+
+  addCurrency({code, label, rate}) {
+    const { currencies } = this.state;
+    const ids = currencies.map(currency => currency.id);
+    const id = Math.max.apply(null, ids) + 1;
+    currencies.push({id, code, label, rate});
+    this.setState({currencies});
   }
 
   render() {
@@ -63,6 +72,7 @@ class App extends React.Component {
           <CurrenciesList
             onCurrencyUpdate={this.updateCurrency}
             onCurrencyDelete={this.deleteCurrency}
+            onCurrencyAdd={this.addCurrency}
             currencies={currencies}
           />
         )}
