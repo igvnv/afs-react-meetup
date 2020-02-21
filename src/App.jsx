@@ -41,12 +41,12 @@ class App extends React.Component {
     });
   }
 
-  addCurrency({code, label, rate}) {
+  addCurrency({ code, label, rate }) {
     const { currencies } = this.state;
-    const ids = currencies.map(currency => currency.id);
-    const id = Math.max.apply(null, ids) + 1;
-    currencies.push({id, code, label, rate});
-    this.setState({currencies});
+    const ids = currencies.map((currency) => currency.id);
+    const id = Math.max(...ids) + 1;
+    currencies.push({ id, code, label, rate });
+    this.setState({ currencies });
   }
 
   render() {
