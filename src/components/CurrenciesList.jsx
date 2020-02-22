@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import CurrencyEditor from './CurrencyEditor';
+import CurrencyAdd from './CurrencyAddFunc';
 
 class CurrenciesList extends Component {
   constructor(props) {
@@ -29,7 +30,12 @@ class CurrenciesList extends Component {
   }
 
   render() {
-    const { currencies, onCurrencyUpdate, onCurrencyDelete } = this.props;
+    const {
+      currencies,
+      onCurrencyUpdate,
+      onCurrencyDelete,
+      onCurrencyAdd,
+    } = this.props;
 
     return (
       <div className="container">
@@ -44,6 +50,7 @@ class CurrenciesList extends Component {
               onDelete={onCurrencyDelete}
             />
           ))}
+          <CurrencyAdd onCurrencyAdd={onCurrencyAdd} />
         </div>
       </div>
     );
@@ -62,6 +69,7 @@ CurrenciesList.propTypes = {
   ).isRequired,
   onCurrencyUpdate: PropTypes.func.isRequired,
   onCurrencyDelete: PropTypes.func.isRequired,
+  onCurrencyAdd: PropTypes.func.isRequired,
 };
 
 export default CurrenciesList;
