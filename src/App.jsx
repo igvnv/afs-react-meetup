@@ -2,6 +2,7 @@ import React, { lazy, Suspense } from 'react';
 import './styles/main.scss';
 
 import Tabs from './components/Tabs';
+import Converter from './components/Converter';
 import CurrenciesList from './components/CurrenciesList';
 import Loader from './components/Loader';
 import currenciesList from './currencies';
@@ -13,7 +14,7 @@ class App extends React.Component {
     super(props);
 
     this.state = {
-      activeTab: 'currencies',
+      activeTab: 'converter',
       currencies: currenciesList,
     };
 
@@ -68,6 +69,11 @@ class App extends React.Component {
           }}
         />
 
+        {activeTab === 'converter' && (
+          <Converter
+            currencies={currencies}
+          />
+        )}
         {activeTab === 'currencies' && (
           <CurrenciesList
             onCurrencyUpdate={this.updateCurrency}

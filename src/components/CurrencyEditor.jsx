@@ -30,7 +30,7 @@ class CurrencyEditor extends React.Component {
       id,
       code: codeValue,
       label: labelValue,
-      rate: rateValue,
+      rate: parseFloat(rateValue),
     });
   }
 
