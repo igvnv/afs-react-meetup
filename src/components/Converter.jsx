@@ -1,76 +1,98 @@
-import React, { useState, useEffect } from 'react';
-import { FaAngleDown, FaAngleUp } from 'react-icons/fa';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import ConverterInput from './ConverterInput';
 
-const Converter = ({ currencies }) => {
-  const [code, setCode] = useState('RUB');
-  const [currencyOneAmount, setCurrencyOneAmount] = useState('1000');
-  const [currencyTwoAmount, setCurrencyTwoAmount] = useState('0');
-
-  useEffect(() => {
-    const { rate } = currencies.find(currency => currency.code === code);
-    setCurrencyTwoAmount((parseFloat(currencyOneAmount) * rate).toFixed(2));
-  }, [code, currencies, currencyOneAmount]);
-
-  function getLiSelectorClass(currencyCode) {
-    return currencyCode === code
-      ? 'currency-selector-item currency-selector-item_active'
-      : 'currency-selector-item';
+class Converter extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      currencies: props.currencies,
+      currency1: 'USD',
+      currency2: 'RUB',
+      amount1: '1000',
+      amount2: '0'
+    };
+    this.setCurrency1 = this.setCurrency1.bind(this);
+    this.setCurrency2 = this.setCurrency2.bind(this);
+    this.setAmount1 = this.setAmount1.bind(this);
+    this.setAmount2 = this.setAmount2.bind(this);
   }
 
-  return (
-    <div className="container">
-      <div className="converter">
-        <h2>Конвертер валют</h2>
+  componentDidMount() {
+    this.setAmount1('1000');
+  }
 
-        <div className="converter-input">
-          <div className="converter-input__currency">
-            <span className="converter-input__currency-label">
-              USD <FaAngleDown />
-            </span>
-            <input
-              className="converter-input__input"
-              type="number"
-              value={currencyOneAmount}
-              onChange={(e) => setCurrencyOneAmount(e.target.value)}
-            />
-          </div>
-        </div>
+  getRate1(name) {
+    const { currencies, currency2 } = this.state;
+    const { rate: rate1 } = currencies.find(currency => currency.code === name);
+    const { rate: rate2 } = currencies.find(currency => currency.code === currency2);
+    return rate2 / rate1;
+  }
 
-        <div className="converter-input">
-          <div className="converter-input__currency">
-            <span className="converter-input__currency-label">
-              {code} <FaAngleUp />
-            </span>
-            <input
-              className="converter-input__input"
-              value={currencyTwoAmount}
-              type="number"
-              onChange={(e) => setCurrencyTwoAmount(e.target.value)}
-            />
-          </div>
+  getRate2(name) {
+    const { currencies, currency1 } = this.state;
+    const { rate: rate1 } = currencies.find(currency => currency.code === currency1);
+    const { rate: rate2 } = currencies.find(currency => currency.code === name);
+    return rate2 / rate1;
+  }
 
-          <ul className="currency-selector">
-            {currencies.map(currency => (
-              <li className="currency-selector__item" key={currency.code}>
-                <div
-                  className={getLiSelectorClass(currency.code)}
-                  role="button"
-                  tabIndex={0}
-                  onClick={() => setCode(currency.code)}
-                  onKeyPress={() => {}}
-                >
-                  <span className="currency-selector-item__code">{currency.code}</span>
-                  <span className="currency-selector-item__label">{currency.label}</span>
-                </div>
-              </li>
-            ))}
-          </ul>
+  setCurrency1(currency) {
+    const { amount1 } = this.state;
+    this.setState({
+      currency1: currency,
+      amount2: (parseFloat(amount1) * this.getRate1(currency)).toFixed(2),
+    });
+  }
+
+  setCurrency2(currency) {
+    const { amount2 } = this.state;
+    this.setState({
+      currency2: currency,
+      amount1: (parseFloat(amount2) / this.getRate2(currency)).toFixed(2),
+    });
+  }
+
+  setAmount1(amount) {
+    const { currency1 } = this.state;
+    this.setState({
+      amount1: amount,
+      amount2: (parseFloat(amount) * this.getRate1(currency1)).toFixed(2),
+    });
+  }
+
+  setAmount2(amount) {
+    const { currency2 } = this.state;
+    this.setState({
+      amount1: (parseFloat(amount) / this.getRate2(currency2)).toFixed(2),
+      amount2: amount,
+    });
+  }
+
+  render() {
+    const { currencies, currency1, currency2, amount1, amount2 } = this.state;
+    return (
+      <div className="container">
+        <div className="converter">
+          <h2>Конвертер валют</h2>
+          <ConverterInput
+            currencies={currencies}
+            currency={currency1}
+            amount={amount1}
+            onCurrencyChange={this.setCurrency1}
+            onAmountChange={this.setAmount1}
+          />
+          <ConverterInput
+            currencies={currencies}
+            currency={currency2}
+            amount={amount2}
+            onCurrencyChange={this.setCurrency2}
+            onAmountChange={this.setAmount2}
+          />
         </div>
       </div>
-    </div>
-  );
-};
+    );
+  }
+}
 
 Converter.propTypes = {
   currencies: PropTypes.arrayOf(
