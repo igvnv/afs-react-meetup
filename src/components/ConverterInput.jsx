@@ -1,9 +1,22 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FaAngleDown } from 'react-icons/fa';
 import PropTypes from 'prop-types';
 
 const ConverterInput = ({ currencies, currency, amount, onCurrencyChange, onAmountChange }) => {
   const [hidden, setHiddenList] = useState(true);
+
+  useEffect(() => {
+    const handleEsc = (event) => {
+      if (event.keyCode === 27) {
+        setHiddenList(true);
+      }
+    };
+    window.addEventListener('keydown', handleEsc);
+
+    return () => {
+      window.removeEventListener('keydown', handleEsc);
+    };
+  }, []);
 
   function getLiSelectorClass(currencyCode) {
     return currencyCode === currency
