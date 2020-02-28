@@ -5,6 +5,7 @@ import Tabs from './components/Tabs';
 import Converter from './components/Converter';
 import CurrenciesList from './components/CurrenciesList';
 import Loader from './components/Loader';
+import currencies from './currencies';
 
 const Layout = lazy(() => import('./Layout'));
 

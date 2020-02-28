@@ -2,13 +2,13 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import ConverterInput from './ConverterInput';
 
-let c1, a1;
-
 const Converter = ({ currencies }) => {
   const [currency1, setCurrency1] = useState('USD');
   const [currency2, setCurrency2] = useState('RUB');
   const [amount1, setAmount1] = useState('1000');
   const [amount2, setAmount2] = useState('0');
+  const [prevC1, setPrevC1] = useState();
+  const [prevA1, setPrevA1] = useState();
 
   function getRate1(name) {
     const { rate: rate1 } = currencies.find(currency => currency.code === name);
@@ -31,14 +31,14 @@ const Converter = ({ currencies }) => {
   }
 
   useEffect(() => {
-    if (currency1 !== c1 || amount1 !== a1) {
+    if (currency1 !== prevC1 || amount1 !== prevA1) {
        setAmount2(convert1(amount1, currency1));
     }
     else {
        setAmount1(convert2(amount2, currency2));
     }
-    c1 = currency1;
-    a1 = amount1;
+    setPrevC1(currency1);
+    setPrevA1(amount1);
   }, [currency1, currency2, amount1, amount2]);
 
   return (
