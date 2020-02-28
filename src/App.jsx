@@ -5,7 +5,6 @@ import Tabs from './components/Tabs';
 import Converter from './components/Converter';
 import CurrenciesList from './components/CurrenciesList';
 import Loader from './components/Loader';
-import currenciesList from './currencies';
 
 const Layout = lazy(() => import('./Layout'));
 
@@ -15,43 +14,11 @@ class App extends React.Component {
 
     this.state = {
       activeTab: 'converter',
-      currencies: currenciesList,
     };
-
-    this.updateCurrency = this.updateCurrency.bind(this);
-    this.deleteCurrency = this.deleteCurrency.bind(this);
-    this.addCurrency = this.addCurrency.bind(this);
-  }
-
-  updateCurrency(updatedCurrency) {
-    const { currencies } = this.state;
-
-    this.setState({
-      currencies: currencies.map((currency) => {
-        if (currency.id !== updatedCurrency.id) return currency;
-        return { ...currency, ...updatedCurrency };
-      }),
-    });
-  }
-
-  deleteCurrency(currencyId) {
-    const { currencies } = this.state;
-
-    this.setState({
-      currencies: currencies.filter((currency) => currency.id !== currencyId),
-    });
-  }
-
-  addCurrency({ code, label, rate }) {
-    const { currencies } = this.state;
-    const ids = currencies.map((currency) => currency.id);
-    const id = Math.max(...ids) + 1;
-    currencies.push({ id, code, label, rate });
-    this.setState({ currencies });
   }
 
   render() {
-    const { activeTab, currencies } = this.state;
+    const { activeTab } = this.state;
 
     const tabsList = [
       { name: 'converter', label: 'Конвертер' },
@@ -70,18 +37,9 @@ class App extends React.Component {
         />
 
         {activeTab === 'converter' && (
-          <Converter
-            currencies={currencies}
-          />
+          <Converter currencies={currencies} />
         )}
-        {activeTab === 'currencies' && (
-          <CurrenciesList
-            onCurrencyUpdate={this.updateCurrency}
-            onCurrencyDelete={this.deleteCurrency}
-            onCurrencyAdd={this.addCurrency}
-            currencies={currencies}
-          />
-        )}
+        {activeTab === 'currencies' && <CurrenciesList />}
         {activeTab === 'layout' && (
           <Suspense fallback={<Loader />}>
             <Layout />

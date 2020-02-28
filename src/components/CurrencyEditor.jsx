@@ -1,6 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { FaSave, FaTrashAlt } from 'react-icons/fa';
+import { connect } from 'react-redux';
+
+import { deleteCurrency, updateCurrency } from '../store/actions';
+import { currencyById } from '../store/selectors';
 
 class CurrencyEditor extends React.Component {
   constructor(props) {
@@ -165,4 +169,12 @@ CurrencyEditor.defaultProps = {
   base: false,
 };
 
-export default CurrencyEditor;
+const mapStateToProps = (state, ownProps) => {
+  const { id } = ownProps;
+
+  return { ...currencyById(state, id) };
+};
+
+const mapDispatchToProps = { onDelete: deleteCurrency, onSave: updateCurrency };
+
+export default connect(mapStateToProps, mapDispatchToProps)(CurrencyEditor);

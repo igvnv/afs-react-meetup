@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 
 import CurrencyEditor from './CurrencyEditor';
-import CurrencyAdd from './CurrencyAddFunc';
+import CurrencyAdd from './CurrencyAdd';
 
 class CurrenciesList extends Component {
   constructor(props) {
@@ -30,12 +31,7 @@ class CurrenciesList extends Component {
   }
 
   render() {
-    const {
-      currencies,
-      onCurrencyUpdate,
-      onCurrencyDelete,
-      onCurrencyAdd,
-    } = this.props;
+    const { currencies } = this.props;
 
     return (
       <div className="container">
@@ -43,14 +39,9 @@ class CurrenciesList extends Component {
 
         <div className="currency-editor">
           {currencies.map((currency) => (
-            <CurrencyEditor
-              key={currency.id}
-              {...currency}
-              onSave={onCurrencyUpdate}
-              onDelete={onCurrencyDelete}
-            />
+            <CurrencyEditor key={currency.id} id={currency.id} />
           ))}
-          <CurrencyAdd onCurrencyAdd={onCurrencyAdd} />
+          <CurrencyAdd />
         </div>
       </div>
     );
@@ -67,9 +58,12 @@ CurrenciesList.propTypes = {
       base: PropTypes.bool,
     })
   ).isRequired,
-  onCurrencyUpdate: PropTypes.func.isRequired,
-  onCurrencyDelete: PropTypes.func.isRequired,
-  onCurrencyAdd: PropTypes.func.isRequired,
 };
 
-export default CurrenciesList;
+const mapStateToProps = (state) => {
+  return {
+    currencies: state.currencies,
+  };
+};
+
+export default connect(mapStateToProps)(CurrenciesList);
