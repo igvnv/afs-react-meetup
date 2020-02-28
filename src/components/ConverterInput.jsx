@@ -3,20 +3,21 @@ import { FaAngleDown } from 'react-icons/fa';
 import PropTypes from 'prop-types';
 
 const ConverterInput = ({ currencies, currency, amount, onCurrencyChange, onAmountChange }) => {
-  const [hidden, setHiddenList] = useState(true);
+  const [hidden, setHidden] = useState(true);
 
   useEffect(() => {
     const handleEsc = (event) => {
       if (event.keyCode === 27) {
-        setHiddenList(true);
+        setHidden(true);
       }
     };
-    window.addEventListener('keydown', handleEsc);
-
-    return () => {
-      window.removeEventListener('keydown', handleEsc);
-    };
-  }, []);
+    if (!hidden) {
+      window.addEventListener('keydown', handleEsc);
+      return () => {
+        window.removeEventListener('keydown', handleEsc);
+      };
+    }
+  }, [hidden]);
 
   function getLiSelectorClass(currencyCode) {
     return currencyCode === currency
@@ -29,7 +30,7 @@ const ConverterInput = ({ currencies, currency, amount, onCurrencyChange, onAmou
       <div className="converter-input__currency">
         <span
           className="converter-input__currency-label"
-          onClick={() => setHiddenList(!hidden)}
+          onClick={() => setHidden(!hidden)}
         >
           {currency} <FaAngleDown />
         </span>
@@ -47,10 +48,10 @@ const ConverterInput = ({ currencies, currency, amount, onCurrencyChange, onAmou
             <div
               className={getLiSelectorClass(item.code)}
               role="button"
-              tabIndex={0}
+              tabIndex="0"
               onClick={() => {
                 onCurrencyChange(item.code);
-                setHiddenList(true);
+                setHidden(true);
               }}
               onKeyPress={() => {
               }}

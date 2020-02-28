@@ -1,10 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import ConverterInput from './ConverterInput';
+
+let c1, a1;
 
 const Converter = ({ currencies }) => {
   const [currency1, setCurrency1] = useState('USD');
   const [currency2, setCurrency2] = useState('RUB');
+  const [amount1, setAmount1] = useState('1000');
+  const [amount2, setAmount2] = useState('0');
 
   function getRate1(name) {
     const { rate: rate1 } = currencies.find(currency => currency.code === name);
@@ -26,30 +30,16 @@ const Converter = ({ currencies }) => {
     return (parseFloat(amount) / getRate2(currency)).toFixed(2);
   }
 
-  const [amount1, setAmount1] = useState('1000');
-  const [amount2, setAmount2] = useState(() => {
-    return convert1('1000', 'USD');
-  });
-
-  function setCurrency1Handler(currency) {
-    setCurrency1(currency);
-    setAmount2(convert1(amount1, currency));
-  }
-
-  function setCurrency2Handler(currency) {
-    setCurrency2(currency);
-    setAmount1(convert2(amount2, currency));
-  }
-
-  function setAmount1Handler(amount) {
-    setAmount1(amount);
-    setAmount2(convert1(amount, currency1));
-  }
-
-  function setAmount2Handler(amount) {
-    setAmount1(convert2(amount, currency2));
-    setAmount2(amount);
-  }
+  useEffect(() => {
+    if (currency1 !== c1 || amount1 !== a1) {
+       setAmount2(convert1(amount1, currency1));
+    }
+    else {
+       setAmount1(convert2(amount2, currency2));
+    }
+    c1 = currency1;
+    a1 = amount1;
+  }, [currency1, currency2, amount1, amount2]);
 
   return (
     <div className="container">
@@ -59,15 +49,15 @@ const Converter = ({ currencies }) => {
           currencies={currencies}
           currency={currency1}
           amount={amount1}
-          onCurrencyChange={setCurrency1Handler}
-          onAmountChange={setAmount1Handler}
+          onCurrencyChange={setCurrency1}
+          onAmountChange={setAmount1}
         />
         <ConverterInput
           currencies={currencies}
           currency={currency2}
           amount={amount2}
-          onCurrencyChange={setCurrency2Handler}
-          onAmountChange={setAmount2Handler}
+          onCurrencyChange={setCurrency2}
+          onAmountChange={setAmount2}
         />
       </div>
     </div>
