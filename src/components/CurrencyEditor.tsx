@@ -1,19 +1,43 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { FaSave, FaTrashAlt } from 'react-icons/fa';
 import { connect } from 'react-redux';
 
 import { deleteCurrency, updateCurrency } from '../store/actions';
 import { currencyById } from '../store/selectors';
+import Currency from '../types/Currency';
+import { AppState } from '../store/types';
 
-class CurrencyEditor extends React.Component {
-  constructor(props) {
+type OwnProps = {
+  id: number;
+};
+
+type StateProps = Currency;
+
+type DispatchProps = {
+  onDelete: (currencyId: number) => void;
+  onSave: (currency: Currency) => void;
+};
+
+type CurrencyEditorProps = OwnProps & StateProps & DispatchProps;
+
+type CurrencyEditorState = {
+  codeValue: string;
+  labelValue: string;
+  rateValue: string;
+  errorMessage: string;
+};
+
+class CurrencyEditor extends React.Component<
+  CurrencyEditorProps,
+  CurrencyEditorState
+> {
+  constructor(props: CurrencyEditorProps) {
     super(props);
 
     this.state = {
       codeValue: props.code,
       labelValue: props.label,
-      rateValue: props.rate,
+      rateValue: props.rate.toString(),
       errorMessage: '',
     };
 
@@ -22,7 +46,7 @@ class CurrencyEditor extends React.Component {
     this.validate = this.validate.bind(this);
   }
 
-  saveCurrency(e) {
+  saveCurrency(e: React.SyntheticEvent) {
     e.preventDefault();
 
     if (!this.validate()) return;
@@ -34,11 +58,11 @@ class CurrencyEditor extends React.Component {
       id,
       code: codeValue,
       label: labelValue,
-      rate: rateValue,
+      rate: parseFloat(rateValue),
     });
   }
 
-  deleteCurrency(e) {
+  deleteCurrency(e: React.SyntheticEvent) {
     e.preventDefault();
 
     const { onDelete, id } = this.props;
@@ -155,26 +179,19 @@ class CurrencyEditor extends React.Component {
   }
 }
 
-CurrencyEditor.propTypes = {
-  onSave: PropTypes.func.isRequired,
-  onDelete: PropTypes.func.isRequired,
-  id: PropTypes.number.isRequired,
-  code: PropTypes.string.isRequired,
-  label: PropTypes.string.isRequired,
-  rate: PropTypes.number.isRequired,
-  base: PropTypes.bool,
-};
-
-CurrencyEditor.defaultProps = {
-  base: false,
-};
-
-const mapStateToProps = (state, ownProps) => {
+const mapStateToProps = (state: AppState, ownProps: OwnProps): StateProps => {
   const { id } = ownProps;
 
-  return { ...currencyById(state, id) };
+  const currency = currencyById(state, id);
+
+  if (currency === null) throw new Error('No currency find');
+
+  return currency;
 };
 
-const mapDispatchToProps = { onDelete: deleteCurrency, onSave: updateCurrency };
+const mapDispatchToProps: DispatchProps = {
+  onDelete: deleteCurrency,
+  onSave: updateCurrency,
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(CurrencyEditor);

@@ -1,4 +1,6 @@
-const currencies = [
+import Currency from './types/Currency';
+
+const currencies: Currency[] = [
   {
     id: 1,
     code: 'USD',

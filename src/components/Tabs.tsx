@@ -1,8 +1,15 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
-const Tabs = ({ list, active, onChange }) => {
-  const onTabChange = (tab) => {
+import Tab from '../types/Tab';
+
+type TabsProps = {
+  list: Tab[];
+  active: string;
+  onChange: (newTab: string) => void;
+};
+
+const Tabs: React.FC<TabsProps> = ({ list, active, onChange }) => {
+  const onTabChange = (tab: Tab) => {
     onChange(tab.name);
   };
 
@@ -14,7 +21,7 @@ const Tabs = ({ list, active, onChange }) => {
           onClick={() => onTabChange(tab)}
           onKeyDown={() => onTabChange(tab)}
           role="button"
-          tabIndex="-1"
+          tabIndex={-1}
           className={`tabs__tab ${
             tab.name === active ? 'tabs__tab_active' : ''
           }`}
@@ -24,17 +31,6 @@ const Tabs = ({ list, active, onChange }) => {
       ))}
     </div>
   );
-};
-
-Tabs.propTypes = {
-  active: PropTypes.string.isRequired,
-  list: PropTypes.arrayOf(
-    PropTypes.shape({
-      name: PropTypes.string.isRequired,
-      label: PropTypes.string.isRequired,
-    })
-  ).isRequired,
-  onChange: PropTypes.func.isRequired,
 };
 
 export default Tabs;

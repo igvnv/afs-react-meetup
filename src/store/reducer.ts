@@ -1,13 +1,19 @@
 /* eslint-disable no-case-declarations */
-import { ADD_CURRENCY, DELETE_CURRENCY, UPDATE_CURRENCY } from './actionTypes';
+import {
+  ADD_CURRENCY,
+  DELETE_CURRENCY,
+  UPDATE_CURRENCY,
+  AppState,
+  AppActionsType,
+} from './types';
 import currencies from '../currencies';
 import { currencyById } from './selectors';
 
-const defaultState = {
+const defaultState: AppState = {
   currencies,
 };
 
-const reducer = (state = defaultState, action) => {
+const reducer = (state: AppState = defaultState, action: AppActionsType) => {
   switch (action.type) {
     case ADD_CURRENCY:
       const id = Math.max(...state.currencies.map((c) => c.id)) + 1;

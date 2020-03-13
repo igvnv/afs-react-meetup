@@ -1,11 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
 import { FaPlus } from 'react-icons/fa';
 import { connect } from 'react-redux';
 
 import { addCurrency } from '../store/actions';
+import Currency from '../types/Currency';
 
-const CurrencyAddFunc = ({ onCurrencyAdd }) => {
+type CurrencyAddProps = {
+  onCurrencyAdd: (currency: Currency) => void;
+};
+
+const CurrencyAdd: React.FC<CurrencyAddProps> = ({ onCurrencyAdd }) => {
   const [code, setCode] = useState('');
   const [label, setLabel] = useState('');
   const [rate, setRate] = useState('');
@@ -35,9 +39,11 @@ const CurrencyAddFunc = ({ onCurrencyAdd }) => {
     setErrorMessage('');
   }, [code, label, rate]);
 
-  function addCurrencyHandler(e) {
+  function addCurrencyHandler(e: React.FormEvent) {
     e.preventDefault();
+
     onCurrencyAdd({
+      id: 0,
       code,
       label,
       rate: parseFloat(rate),
@@ -96,7 +102,7 @@ const CurrencyAddFunc = ({ onCurrencyAdd }) => {
         <button
           type="submit"
           className="currency-editor__action-button"
-          disabled={errorMessage}
+          disabled={!!errorMessage}
         >
           <FaPlus className="currency-editor__action-icon" />
           <span className="currency-editor__action-label">Добавить</span>
@@ -111,12 +117,8 @@ const CurrencyAddFunc = ({ onCurrencyAdd }) => {
   );
 };
 
-CurrencyAddFunc.propTypes = {
-  onCurrencyAdd: PropTypes.func.isRequired,
-};
-
 const mapDispatchToProps = {
   onCurrencyAdd: addCurrency,
 };
 
-export default connect(null, mapDispatchToProps)(CurrencyAddFunc);
+export default connect(null, mapDispatchToProps)(CurrencyAdd);

@@ -1,12 +1,30 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import CurrencyEditor from './CurrencyEditor';
 import CurrencyAdd from './CurrencyAdd';
+import Currency from '../types/Currency';
+import { AppState } from '../store/types';
 
-class CurrenciesList extends Component {
-  constructor(props) {
+type OwnProps = {};
+
+type StateProps = {
+  currencies: Currency[];
+};
+
+type DispatchProps = {};
+
+type CurrenciesListProps = OwnProps & StateProps & DispatchProps;
+
+type CurrenciesListState = {
+  previousPageTitle: string;
+};
+
+class CurrenciesList extends Component<
+  CurrenciesListProps,
+  CurrenciesListState
+> {
+  constructor(props: CurrenciesListProps) {
     super(props);
 
     this.state = {
@@ -48,19 +66,7 @@ class CurrenciesList extends Component {
   }
 }
 
-CurrenciesList.propTypes = {
-  currencies: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.number.isRequired,
-      code: PropTypes.string.isRequired,
-      label: PropTypes.string.isRequired,
-      rate: PropTypes.number.isRequired,
-      base: PropTypes.bool,
-    })
-  ).isRequired,
-};
-
-const mapStateToProps = (state) => {
+const mapStateToProps = (state: AppState): StateProps => {
   return {
     currencies: state.currencies,
   };

@@ -7,8 +7,13 @@ import Loader from './components/Loader';
 
 const Layout = lazy(() => import('./Layout'));
 
-class App extends React.Component {
-  constructor(props) {
+type AppProps = {};
+type AppState = {
+  activeTab: string;
+};
+
+class App extends React.Component<AppProps, AppState> {
+  constructor(props: AppProps) {
     super(props);
 
     this.state = {
@@ -30,7 +35,7 @@ class App extends React.Component {
         <Tabs
           active={activeTab}
           list={tabsList}
-          onChange={(tabName) => {
+          onChange={(tabName: string) => {
             this.setState({ activeTab: tabName });
           }}
         />
